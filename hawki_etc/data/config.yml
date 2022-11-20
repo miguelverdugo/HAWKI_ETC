@@ -1,0 +1,49 @@
+
+
+inst_properties :   # this should configure the instrument
+    pixel_scale : [0.004, 0.0015] # arcsec / pixel
+    modes : ["imaging", "spectroscopy"]
+    ao_mode : ["SCAO", "MCAO"]
+    filter : "Ks"
+    
+    
+target_properties :    # This should create a source object
+    spectrum : 
+        templates : "pickles/a0v"
+        MARCS_Stellar_Model :
+        blackbody : 
+            temperature : 5000
+        power_law : 
+            index : 1
+        emission_line :
+            lambda : 5000 
+            flux :   1e-15
+            fwhm :   2.5 
+        uniform :
+    spatial : 
+        point_source : 
+        extended_uniform :
+        sersic profile : 
+    redshift : 0
+    magnitude : 20
+    filter : "V"
+    system : "Vega"
+        
+sky_conditions :  # observing conditions
+    pwv : 30
+    imaging_quality :    # see anisocado
+        turbulence_category : 100  # %
+        IQ : 
+    moon_FLI : 0.5
+    airmass : 1.5
+    
+observation :  # observations
+    dit : 60 
+    ndit :  1
+    
+    
+
+      
+        
+    
+    
