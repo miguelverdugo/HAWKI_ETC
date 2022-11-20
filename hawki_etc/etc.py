@@ -52,7 +52,6 @@ class ETC_base:
 
     """
 
-
     def __init__(self, mode, pixel_size, ao_mode=None, target_separation=0, dx=0, dy=0):
 
         self.mode = mode
@@ -70,13 +69,15 @@ class ETC_base:
         self.sky_params = None
         self.obs_params = None
 
-    def set_sed(self, spectrum_type, **kwargs):
+    def set_sed(self, spectrum_type="template", **kwargs):
         """
 
         Parameters
         ----------
-        spectrum_type:
-        kwargs
+        spectrum_type : str
+             Type of spectrum : 'template' 'emission_line', 'black_body', 'power_law', 'uniform', 'MARCS' (not implemented'
+        kwargs : dict
+            Parameters passed to the functions
 
         Returns
         -------
@@ -113,9 +114,6 @@ class ETC_base:
 
         self.source = distribution
         self.source_params = check_func_params(func, func_params)
-        self.source_params.update(dict(filter_name=self.sed_params["filter_curve"],
-                                       magnitude=self.sed_params["magnitude"],
-                                       redshift=self.sed_params["redshift"]))
         print("Source '%s' with parameters %s" % (self.source, self.source_params))
 
     def set_sky_conditions(self, airmass=1.5, moon_phase=0.5, pwv=10, turbulence=100, iq=0.8):
@@ -148,6 +146,8 @@ class ETC_base:
         print("Observing parameters:", self.obs_params)
 
     def _get_sed(self):
+
+
         try:
             sed_func = SED_dict[self.sed_type]
         except KeyError as error:
@@ -160,6 +160,10 @@ class ETC_base:
         return sp
 
     def _get_source(self):
+
+        self.source_params.update(dict(filter_name=self.sed_params["filter_curve"],
+                                       magnitude=self.sed_params["magnitude"],
+                                       redshift=self.sed_params["redshift"]))
         src_func = FLUX_DISTRO_dict[self.source]
         params = self.source_params
 
